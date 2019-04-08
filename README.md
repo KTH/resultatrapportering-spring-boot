@@ -5,7 +5,7 @@ Implementation av Resultatrapportering i Spring Boot
 Startas med
 
 ```bash
-java -jar resultatrapportering [kurstillfalleUid] [modulUid]
+java -jar resultatrapportering.jar [kurstillfalleUid] [modulUid]
 ```
 
 Byggs med
