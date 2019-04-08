@@ -23,5 +23,7 @@ dependencies {
 	implementation 'com.jayway.jsonpath:json-path:2.4.0'
 	implementation 'org.apache.commons:commons-lang3:3.8.1'
 
+	annotationProcessor "org.springframework:spring-context-indexer"
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

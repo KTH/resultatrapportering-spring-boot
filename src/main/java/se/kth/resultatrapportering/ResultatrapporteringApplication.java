@@ -52,7 +52,8 @@ public class ResultatrapporteringApplication implements CommandLineRunner {
   public void run(String... args) throws JsonProcessingException {
 
     if (args.length != 2) {
-      System.out.println("Usage: java -jar resultatrapportering.jar [kurstillfalleUid] [modulUid]");
+      System.err.println("Usage: java -jar resultatrapportering.jar [kurstillfalleUid] [modulUid]");
+      System.exit(1);
     }
 
 //    String module = "dff337ca-9aef-11e8-9cbb-1012b1a242f7";
