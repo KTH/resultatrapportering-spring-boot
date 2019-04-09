@@ -1,4 +1,4 @@
-package se.kth.ladok;
+package se.kth.resultatrapportering.ladok.model;
 
 import java.util.HashMap;
 import java.util.List;

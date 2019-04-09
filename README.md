@@ -13,3 +13,6 @@ Byggs med
 ```bash
 ./gradlew clean build
 ```
+
+Installera också lombok i din kodeditor om du inte redan gjort det. Instruktioner här: https://projectlombok.org/
+Klicka på install och välj din editor.
