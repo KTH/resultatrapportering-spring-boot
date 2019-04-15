@@ -1,51 +1,50 @@
 
-package se.kth.resultatrapportering.canvas.model;
+package se.kth.resultatrapportering.ladok.model;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "events",
-    "linked"
+    "sv",
+    "en"
 })
-public class GradeChanges {
+public class Benamning {
 
-    @JsonProperty("events")
-    private List<Event> events = null;
-    @JsonProperty("linked")
-    private Linked linked;
+    @JsonProperty("sv")
+    private String sv;
+    @JsonProperty("en")
+    private String en;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    @JsonProperty("events")
-    public List<Event> getEvents() {
-        return events;
+    @JsonProperty("sv")
+    public String getSv() {
+        return sv;
     }
 
-    @JsonProperty("events")
-    public void setEvents(List<Event> events) {
-        this.events = events;
+    @JsonProperty("sv")
+    public void setSv(String sv) {
+        this.sv = sv;
     }
 
-    @JsonProperty("linked")
-    public Linked getLinked() {
-        return linked;
+    @JsonProperty("en")
+    public String getEn() {
+        return en;
     }
 
-    @JsonProperty("linked")
-    public void setLinked(Linked linked) {
-        this.linked = linked;
+    @JsonProperty("en")
+    public void setEn(String en) {
+        this.en = en;
     }
 
     @JsonAnyGetter
@@ -60,12 +59,12 @@ public class GradeChanges {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("events", events).append("linked", linked).append("additionalProperties", additionalProperties).toString();
+        return new ToStringBuilder(this).append("sv", sv).append("en", en).append("additionalProperties", additionalProperties).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(additionalProperties).append(events).append(linked).toHashCode();
+        return new HashCodeBuilder().append(additionalProperties).append(sv).append(en).toHashCode();
     }
 
     @Override
@@ -73,11 +72,11 @@ public class GradeChanges {
         if (other == this) {
             return true;
         }
-        if ((other instanceof GradeChanges) == false) {
+        if ((other instanceof Benamning) == false) {
             return false;
         }
-        GradeChanges rhs = ((GradeChanges) other);
-        return new EqualsBuilder().append(additionalProperties, rhs.additionalProperties).append(events, rhs.events).append(linked, rhs.linked).isEquals();
+        Benamning rhs = ((Benamning) other);
+        return new EqualsBuilder().append(additionalProperties, rhs.additionalProperties).append(sv, rhs.sv).append(en, rhs.en).isEquals();
     }
 
 }

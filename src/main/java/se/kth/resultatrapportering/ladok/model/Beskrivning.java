@@ -1,20 +1,22 @@
 
-package se.kth.resultatrapportering.canvas.model;
+package se.kth.resultatrapportering.ladok.model;
 
-import java.util.HashMap;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder
-public class IntegrationData {
+@JsonPropertyOrder({
+
+})
+public class Beskrivning {
 
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
@@ -44,10 +46,10 @@ public class IntegrationData {
         if (other == this) {
             return true;
         }
-        if ((other instanceof IntegrationData) == false) {
+        if ((other instanceof Beskrivning) == false) {
             return false;
         }
-        IntegrationData rhs = ((IntegrationData) other);
+        Beskrivning rhs = ((Beskrivning) other);
         return new EqualsBuilder().append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 

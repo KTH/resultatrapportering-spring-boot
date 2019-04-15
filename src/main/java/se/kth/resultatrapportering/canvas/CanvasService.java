@@ -1,12 +1,13 @@
 package se.kth.resultatrapportering.canvas;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import java.io.IOException;
 import java.net.URI;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import reactor.netty.http.client.HttpClient;
 import se.kth.resultatrapportering.ResultatrapporteringProperties;
-import se.kth.resultatrapportering.canvas.model.GradeChanges;
+import se.kth.resultatrapportering.canvas.model.Assignment;
+import se.kth.resultatrapportering.canvas.model.Course;
+import se.kth.resultatrapportering.canvas.model.CustomData;
+import se.kth.resultatrapportering.canvas.model.Submission;
+import se.kth.resultatrapportering.canvas.model.User;
 
 @Service
 public class CanvasService {
@@ -52,16 +57,97 @@ public class CanvasService {
     return webClient;
   }
 
-  public GradeChanges findGradeChangeForCourse(int canvasCourseId) {
+  public List<Assignment> findAssignmentsForCourse(int canvasCourseId) {
 
-    URI studiedeltagare = this.builderFactory.builder()
-        .path("api/v1/audit/grade_change/courses/{courseId}")
+    URI assignments = this.builderFactory.builder()
+        .path("api/v1/courses/{courseId}/assignments")
+        .queryParam("per_page", "500")
+        .build(canvasCourseId);
+
+    final Assignment[] assignmentArray = this.webClient.get()
+        .uri(assignments)
+        .retrieve()
+        .bodyToMono(Assignment[].class)
+        .block();
+
+    return Lists.newArrayList(assignmentArray);
+  }
+
+  public List<Submission> findSubmissionsForAssignment(int canvasCourseId, int canvasAssignmentId) {
+
+    URI submissions = this.builderFactory.builder()
+        .path("/api/v1/courses/{courseId}/assignments/{assignmentId}/submissions")
+        .queryParam("per_page", "500")
+        .build(canvasCourseId, canvasAssignmentId);
+
+    final Submission[] submissionArray = this.webClient.get()
+        .uri(submissions)
+        .retrieve()
+        .bodyToMono(Submission[].class)
+        .block();
+
+    return Lists.newArrayList(submissionArray);
+  }
+
+  public List<Submission> findSubmissionsForCourse(int canvasCourseId) {
+
+    URI submissions = this.builderFactory.builder()
+        .path("/api/v1/courses/{courseId}/students/submissions")
+        .queryParam("per_page", "500")
+        .build(canvasCourseId);
+
+    final Submission[] submissionArray = this.webClient.get()
+        .uri(submissions)
+        .retrieve()
+        .bodyToMono(Submission[].class)
+        .block();
+
+    return Lists.newArrayList(submissionArray);
+  }
+
+  public String getLadokUidForStudent(int canvasStudentId) {
+
+    URI studentCustomData = this.builderFactory.builder()
+        .path("/api/v1/users/{studentId}/custom_data/ladok_uid")
+        .queryParam("ns", "se.kth")
+        .build(canvasStudentId);
+
+    final CustomData customData = this.webClient.get()
+        .uri(studentCustomData)
+        .retrieve()
+        .bodyToMono(CustomData.class)
+        .block();
+
+    return customData.getData();
+  }
+
+  public List<User> findStudentsForCourse(int canvasCourseId) {
+
+    URI students = this.builderFactory.builder()
+        .path("/api/v1/courses/{courseId}/users")
+        .queryParam("enrollment_type[]", "student")
+        .queryParam("per_page", "500")
+        .build(canvasCourseId);
+
+    final User[] userArray = this.webClient.get()
+        .uri(students)
+        .retrieve()
+        .bodyToMono(User[].class)
+        .block();
+
+    return Lists.newArrayList(userArray);
+  }
+
+  public Course findCourse(int canvasCourseId) {
+
+    URI course = this.builderFactory.builder()
+        .path("/api/v1/courses/{courseId}")
         .build(canvasCourseId);
 
     return this.webClient.get()
-        .uri(studiedeltagare)
+        .uri(course)
         .retrieve()
-        .bodyToMono(GradeChanges.class)
+        .bodyToMono(Course.class)
         .block();
   }
 }

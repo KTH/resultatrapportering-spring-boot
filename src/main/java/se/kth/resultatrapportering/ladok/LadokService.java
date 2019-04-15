@@ -1,6 +1,7 @@
 package se.kth.resultatrapportering.ladok;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jayway.jsonpath.JsonPath;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -22,7 +23,9 @@ import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 import se.kth.resultatrapportering.ResultatrapporteringProperties;
 import se.kth.resultatrapportering.ladok.model.Betyg;
+import se.kth.resultatrapportering.ladok.model.Betygskala;
 import se.kth.resultatrapportering.ladok.model.Filtrera;
+import se.kth.resultatrapportering.ladok.model.Studieresultat;
 
 @Service
 public class LadokService {
@@ -71,7 +74,7 @@ public class LadokService {
           .build();
     }
 
-    public String findStudieresultat(String kurstillfalleUID, Filtrera filter) {
+    public Studieresultat findStudieresultat(String kurstillfalleUID, Filtrera filter) {
 
       URI studiedeltagare = builderFactory.builder()
           .path("/studieresultat/rapportera/utbildningsinstans/{kurstillfalleUID}/sok")
@@ -82,7 +85,7 @@ public class LadokService {
           .uri(studiedeltagare)
           .syncBody(filter)
           .retrieve()
-          .bodyToMono(String.class)
+          .bodyToMono(Studieresultat.class)
           .block();
     }
 
@@ -111,6 +114,34 @@ public class LadokService {
           .retrieve()
           .bodyToMono(Void.class)
           .block();
+    }
+
+    public Betygskala findBetygskala(int betygskalaId) {
+
+      URI betygskala = builderFactory.builder()
+          .path("/grunddata/betygsskala/{betygskalaId}")
+          .build(betygskalaId);
+
+      return webClient.get()
+          .uri(betygskala)
+          .retrieve()
+          .bodyToMono(Betygskala.class)
+          .block();
+    }
+
+    public String findKursUidByKurstillfalle(String kurstillfalleUID) {
+
+      URI kurstillfalle = builderFactory.builder()
+          .path("/kurstillfalle/{kurstillfalleUID}")
+          .build(kurstillfalleUID);
+
+      final String json = webClient.get()
+          .uri(kurstillfalle)
+          .retrieve()
+          .bodyToMono(String.class)
+          .block();
+
+      return JsonPath.read(json, "$.Utbildningsinstans.UtbildningUID");
     }
   }
 }

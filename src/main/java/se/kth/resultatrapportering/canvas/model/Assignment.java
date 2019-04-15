@@ -63,14 +63,14 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
     "has_overrides",
     "integration_id",
     "integration_data",
+    "allowed_extensions",
     "published",
     "unpublishable",
     "only_visible_to_overrides",
     "locked_for_user",
     "submissions_download_url",
     "anonymize_students",
-    "in_closed_grading_period",
-    "allowed_extensions"
+    "in_closed_grading_period"
 })
 public class Assignment {
 
@@ -91,7 +91,7 @@ public class Assignment {
     @JsonProperty("assignment_group_id")
     private Integer assignmentGroupId;
     @JsonProperty("grading_standard_id")
-    private Object gradingStandardId;
+    private Integer gradingStandardId;
     @JsonProperty("created_at")
     private String createdAt;
     @JsonProperty("updated_at")
@@ -168,6 +168,8 @@ public class Assignment {
     private String integrationId;
     @JsonProperty("integration_data")
     private IntegrationData integrationData;
+    @JsonProperty("allowed_extensions")
+    private List<String> allowedExtensions = null;
     @JsonProperty("published")
     private Boolean published;
     @JsonProperty("unpublishable")
@@ -182,8 +184,6 @@ public class Assignment {
     private Boolean anonymizeStudents;
     @JsonProperty("in_closed_grading_period")
     private Boolean inClosedGradingPeriod;
-    @JsonProperty("allowed_extensions")
-    private List<String> allowedExtensions = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -268,12 +268,12 @@ public class Assignment {
     }
 
     @JsonProperty("grading_standard_id")
-    public Object getGradingStandardId() {
+    public Integer getGradingStandardId() {
         return gradingStandardId;
     }
 
     @JsonProperty("grading_standard_id")
-    public void setGradingStandardId(Object gradingStandardId) {
+    public void setGradingStandardId(Integer gradingStandardId) {
         this.gradingStandardId = gradingStandardId;
     }
 
@@ -657,6 +657,16 @@ public class Assignment {
         this.integrationData = integrationData;
     }
 
+    @JsonProperty("allowed_extensions")
+    public List<String> getAllowedExtensions() {
+        return allowedExtensions;
+    }
+
+    @JsonProperty("allowed_extensions")
+    public void setAllowedExtensions(List<String> allowedExtensions) {
+        this.allowedExtensions = allowedExtensions;
+    }
+
     @JsonProperty("published")
     public Boolean getPublished() {
         return published;
@@ -727,16 +737,6 @@ public class Assignment {
         this.inClosedGradingPeriod = inClosedGradingPeriod;
     }
 
-    @JsonProperty("allowed_extensions")
-    public List<String> getAllowedExtensions() {
-        return allowedExtensions;
-    }
-
-    @JsonProperty("allowed_extensions")
-    public void setAllowedExtensions(List<String> allowedExtensions) {
-        this.allowedExtensions = allowedExtensions;
-    }
-
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -749,7 +749,7 @@ public class Assignment {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("description", description).append("dueAt", dueAt).append("unlockAt", unlockAt).append("lockAt", lockAt).append("pointsPossible", pointsPossible).append("gradingType", gradingType).append("assignmentGroupId", assignmentGroupId).append("gradingStandardId", gradingStandardId).append("createdAt", createdAt).append("updatedAt", updatedAt).append("peerReviews", peerReviews).append("automaticPeerReviews", automaticPeerReviews).append("position", position).append("gradeGroupStudentsIndividually", gradeGroupStudentsIndividually).append("anonymousPeerReviews", anonymousPeerReviews).append("groupCategoryId", groupCategoryId).append("postToSis", postToSis).append("moderatedGrading", moderatedGrading).append("omitFromFinalGrade", omitFromFinalGrade).append("intraGroupPeerReviews", intraGroupPeerReviews).append("anonymousInstructorAnnotations", anonymousInstructorAnnotations).append("anonymousGrading", anonymousGrading).append("gradersAnonymousToGraders", gradersAnonymousToGraders).append("graderCount", graderCount).append("graderCommentsVisibleToGraders", graderCommentsVisibleToGraders).append("finalGraderId", finalGraderId).append("graderNamesVisibleToFinalGrader", graderNamesVisibleToFinalGrader).append("allowedAttempts", allowedAttempts).append("secureParams", secureParams).append("courseId", courseId).append("name", name).append("submissionTypes", submissionTypes).append("hasSubmittedSubmissions", hasSubmittedSubmissions).append("dueDateRequired", dueDateRequired).append("maxNameLength", maxNameLength).append("isQuizAssignment", isQuizAssignment).append("canDuplicate", canDuplicate).append("originalCourseId", originalCourseId).append("originalAssignmentId", originalAssignmentId).append("originalAssignmentName", originalAssignmentName).append("workflowState", workflowState).append("muted", muted).append("htmlUrl", htmlUrl).append("hasOverrides", hasOverrides).append("integrationId", integrationId).append("integrationData", integrationData).append("published", published).append("unpublishable", unpublishable).append("onlyVisibleToOverrides", onlyVisibleToOverrides).append("lockedForUser", lockedForUser).append("submissionsDownloadUrl", submissionsDownloadUrl).append("anonymizeStudents", anonymizeStudents).append("inClosedGradingPeriod", inClosedGradingPeriod).append("allowedExtensions", allowedExtensions).append("additionalProperties", additionalProperties).toString();
+        return new ToStringBuilder(this).append("id", id).append("description", description).append("dueAt", dueAt).append("unlockAt", unlockAt).append("lockAt", lockAt).append("pointsPossible", pointsPossible).append("gradingType", gradingType).append("assignmentGroupId", assignmentGroupId).append("gradingStandardId", gradingStandardId).append("createdAt", createdAt).append("updatedAt", updatedAt).append("peerReviews", peerReviews).append("automaticPeerReviews", automaticPeerReviews).append("position", position).append("gradeGroupStudentsIndividually", gradeGroupStudentsIndividually).append("anonymousPeerReviews", anonymousPeerReviews).append("groupCategoryId", groupCategoryId).append("postToSis", postToSis).append("moderatedGrading", moderatedGrading).append("omitFromFinalGrade", omitFromFinalGrade).append("intraGroupPeerReviews", intraGroupPeerReviews).append("anonymousInstructorAnnotations", anonymousInstructorAnnotations).append("anonymousGrading", anonymousGrading).append("gradersAnonymousToGraders", gradersAnonymousToGraders).append("graderCount", graderCount).append("graderCommentsVisibleToGraders", graderCommentsVisibleToGraders).append("finalGraderId", finalGraderId).append("graderNamesVisibleToFinalGrader", graderNamesVisibleToFinalGrader).append("allowedAttempts", allowedAttempts).append("secureParams", secureParams).append("courseId", courseId).append("name", name).append("submissionTypes", submissionTypes).append("hasSubmittedSubmissions", hasSubmittedSubmissions).append("dueDateRequired", dueDateRequired).append("maxNameLength", maxNameLength).append("isQuizAssignment", isQuizAssignment).append("canDuplicate", canDuplicate).append("originalCourseId", originalCourseId).append("originalAssignmentId", originalAssignmentId).append("originalAssignmentName", originalAssignmentName).append("workflowState", workflowState).append("muted", muted).append("htmlUrl", htmlUrl).append("hasOverrides", hasOverrides).append("integrationId", integrationId).append("integrationData", integrationData).append("allowedExtensions", allowedExtensions).append("published", published).append("unpublishable", unpublishable).append("onlyVisibleToOverrides", onlyVisibleToOverrides).append("lockedForUser", lockedForUser).append("submissionsDownloadUrl", submissionsDownloadUrl).append("anonymizeStudents", anonymizeStudents).append("inClosedGradingPeriod", inClosedGradingPeriod).append("additionalProperties", additionalProperties).toString();
     }
 
     @Override

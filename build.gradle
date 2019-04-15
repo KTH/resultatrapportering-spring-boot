@@ -15,16 +15,18 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
-	//implementation 'org.springframework.boot:spring-boot-web-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-json'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'de.codecentric:spring-boot-admin-starter-server:2.1.4'
+	implementation 'de.codecentric:spring-boot-admin-starter-client:2.1.4'
 
 	implementation 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
-	implementation 'com.google.guava:guava:23.0'
+	implementation 'com.google.guava:guava:27.1-jre'
 	implementation 'com.jayway.jsonpath:json-path:2.4.0'
 	implementation 'org.apache.commons:commons-lang3:3.8.1'
-
-	//compileOnly 'org.hibernate:hibernate-validator:6.0.16.Final'
+	implementation 'org.apache.commons:commons-collections4:4.3'
+	
 	compileOnly 'org.projectlombok:lombok:1.18.6'
 
 	annotationProcessor 'org.projectlombok:lombok:1.18.6'
@@ -32,5 +34,4 @@ dependencies {
 	annotationProcessor "org.springframework:spring-context-indexer"
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
 }
