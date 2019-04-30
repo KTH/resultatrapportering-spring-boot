@@ -10,9 +10,13 @@ import java.net.URI;
 import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.http.codec.json.Jackson2JsonDecoder;
+import org.springframework.http.codec.json.Jackson2JsonEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
+import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 import se.kth.resultatrapportering.ResultatrapporteringProperties;
 import se.kth.resultatrapportering.canvas.model.Assignment;
@@ -38,6 +42,15 @@ public class CanvasService {
 
   private WebClient createWebClient(ResultatrapporteringProperties props) throws IOException {
 
+    ExchangeStrategies strategies = ExchangeStrategies
+        .builder()
+        .codecs(clientDefaultCodecsConfigurer -> {
+          clientDefaultCodecsConfigurer.defaultCodecs().jackson2JsonEncoder(
+              new Jackson2JsonEncoder(mapper, MediaType.APPLICATION_JSON));
+          clientDefaultCodecsConfigurer.defaultCodecs().jackson2JsonDecoder(
+              new Jackson2JsonDecoder(mapper, MediaType.APPLICATION_JSON));
+        }).build();
+
     SslContext sslContext = SslContextBuilder
         .forClient()
         .trustManager(InsecureTrustManagerFactory.INSTANCE)
@@ -47,6 +60,7 @@ public class CanvasService {
         .secure(spec -> spec.sslContext(sslContext));
 
     final WebClient webClient = WebClient.builder()
+        .exchangeStrategies(strategies)
         .clientConnector(new ReactorClientHttpConnector(httpClient))
         .defaultHeader("Authorization", "Bearer " + props.getCanvasToken())
         .defaultHeader("Accept", MediaType.APPLICATION_JSON.toString())
@@ -138,7 +152,7 @@ public class CanvasService {
     return Lists.newArrayList(userArray);
   }
 
-  public Course findCourse(int canvasCourseId) {
+  public Mono<Course> findCourse(int canvasCourseId) {
 
     URI course = this.builderFactory.builder()
         .path("/api/v1/courses/{courseId}")
@@ -147,7 +161,6 @@ public class CanvasService {
     return this.webClient.get()
         .uri(course)
         .retrieve()
-        .bodyToMono(Course.class)
-        .block();
+        .bodyToMono(Course.class);
   }
 }

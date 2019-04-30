@@ -13,6 +13,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
+import java.util.List;
 import javax.net.ssl.KeyManagerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -98,6 +99,21 @@ public class LadokService {
       return webClient.post()
           .uri(postbetyg)
           .syncBody(betyg)
+          .retrieve()
+          .bodyToMono(String.class)
+          .block();
+    }
+
+
+    public String createStudieresultat(List<Betyg> betygLista) {
+
+      URI postbetyg = builderFactory.builder()
+          .path("/studieresultat/skapa")
+          .build();
+
+      return webClient.post()
+          .uri(postbetyg)
+          .syncBody(betygLista)
           .retrieve()
           .bodyToMono(String.class)
           .block();

@@ -9,6 +9,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.Disposable;
+import reactor.core.publisher.Mono;
 import se.kth.resultatrapportering.canvas.CanvasService;
 import se.kth.resultatrapportering.canvas.model.Assignment;
 import se.kth.resultatrapportering.canvas.model.Course;
@@ -33,7 +35,8 @@ public class ResultatrapporteringService {
 
     Map<Integer, Betygskala> betygskalaMap = Maps.newHashMap();
 
-    Course course = canvas.findCourse(canvasCourseId);
+    Course course = canvas.findCourse(canvasCourseId).block();
+
     List<User> canvasStudents = canvas.findStudentsForCourse(canvasCourseId);
     List<Assignment> canvasAssignments = canvas.findAssignmentsForCourse(canvasCourseId);
 
